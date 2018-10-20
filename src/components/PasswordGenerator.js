@@ -6,15 +6,22 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-input-range/lib/css/index.css";
 import "./PasswordGenerator.scss";
 import "./Slider.scss";
+import refreshImg from "./images/refresh-btn.png";
+import shield from "./images/shield.png";
+import shielderror from "./images/shielderror.png";
 
 class PasswordGenerator extends Component {
   state = {
-    length: 1,
+    length: 16,
     password: "",
     specialChar: false,
     copied: false,
     value: 1
   };
+
+  componentDidMount() {
+    this.generatePassword();
+  }
 
   generatePassword = () => {
     const length = this.state.length;
@@ -39,12 +46,22 @@ class PasswordGenerator extends Component {
   checkSafety = () => {
     const length = this.state.length;
     if (length <= 5) {
-      return <span style={{ background: "red" }}>Weak Password</span>;
+      return (
+        <span style={{ background: "red" }}>
+          <img src={shielderror} alt="refresh-btn" /> Weak Password
+        </span>
+      );
     } else if (length <= 15) {
-      return <span style={{ background: "orange" }}>Strong Password</span>;
+      return (
+        <span style={{ background: "orange" }}>
+          <img src={shield} alt="refresh-btn" /> Strong Password
+        </span>
+      );
     } else {
       return (
-        <span style={{ background: "#7aff3d" }}>Very Strong Password</span>
+        <span style={{ background: "#7aff3d" }}>
+          <img src={shield} alt="refresh-btn" /> Very Strong Password
+        </span>
       );
     }
   };
@@ -60,41 +77,65 @@ class PasswordGenerator extends Component {
 
   render() {
     return (
-      <div>
-        <form>
-          <label>Password Generator Length: {this.state.length}</label> Special
-          Characters
-          <input
-            name="speialChar"
-            type="checkbox"
-            checked={this.state.specialChar}
-            onChange={this.handleInputChange}
-          />
-          <p>Your new password is: {this.state.password}</p>
-          <p>How safe is your password: {this.checkSafety()}</p>
-          <button onClick={this.handleRefresh}>Refresh</button>
-        </form>
-
-        <CopyToClipboard
-          text={this.state.password}
-          onCopy={() => this.setState({ copied: true }, this.notify)}
+      <div className="wrapper">
+        <div
+          className="panel"
+          style={
+            this.state.length <= 5
+              ? { background: "red" }
+              : this.state.length <= 15
+                ? { background: "orange" }
+                : { background: "#7aff3d" }
+          }
         >
-          <button>Copy Password</button>
-        </CopyToClipboard>
-        <ToastContainer
-          position="top-center"
-          autoClose={1000}
-          hideProgressBar
-          closeOnClick
-          pauseOnVisibilityChange
-        />
-        <InputRange
-          maxValue={100}
-          minValue={1}
-          value={this.state.length}
-          onChange={length => this.setState({ length }, this.generatePassword)}
-          onChangeComplete={() => console.log("Finished")}
-        />
+          <div className="password">
+            <div className="password-output">
+              <span>{this.state.password}</span>
+            </div>
+            <div className="btn-refresh" onClick={this.handleRefresh}>
+              <img src={refreshImg} alt="refresh-btn" />
+            </div>
+          </div>
+          <div className="security-check">
+            <p>{this.checkSafety()}</p>
+          </div>
+        </div>
+        <div className="control">
+          <button
+            className="btn btn-symbol"
+            style={
+              this.state.specialChar ? { border: "1px solid #2dbf90" } : {}
+            }
+            onClick={this.handleInputChange}
+          >
+            Symbols
+          </button>
+          <CopyToClipboard
+            text={this.state.password}
+            onCopy={() => this.setState({ copied: true }, this.notify)}
+          >
+            <button className="btn btn-copy">Copy password</button>
+          </CopyToClipboard>
+          <div className="length">
+            Length: <span>{this.state.length}</span>
+          </div>
+          <InputRange
+            maxValue={100}
+            minValue={1}
+            value={this.state.length}
+            onChange={length =>
+              this.setState({ length }, this.generatePassword)
+            }
+            onChangeComplete={() => console.log("Finished")}
+          />
+          <ToastContainer
+            position="top-center"
+            autoClose={1000}
+            hideProgressBar
+            closeOnClick
+            pauseOnVisibilityChange
+          />
+        </div>
       </div>
     );
   }
