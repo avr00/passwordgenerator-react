@@ -9,6 +9,7 @@ import "./Slider.scss";
 import refreshImg from "./images/refresh-btn.png";
 import shield from "./images/shield.png";
 import shielderror from "./images/shielderror.png";
+import "./Toastify.scss";
 
 class PasswordGenerator extends Component {
   state = {
@@ -17,6 +18,18 @@ class PasswordGenerator extends Component {
     specialChar: false,
     copied: false,
     value: 1
+  };
+
+  bgStyle = () => {
+    const length = this.state.length;
+    const bg =
+      length <= 5
+        ? { background: "#60261f" }
+        : length <= 15
+          ? { background: "#4A2600" }
+          : { background: "rgba(10,33,32,1)" };
+    console.log("hi");
+    return bg;
   };
 
   componentDidMount() {
@@ -47,20 +60,20 @@ class PasswordGenerator extends Component {
     const length = this.state.length;
     if (length <= 5) {
       return (
-        <span style={{ background: "red" }}>
-          <img src={shielderror} alt="refresh-btn" /> Weak Password
+        <span style={{ background: "#E6323C" }}>
+          <img src={shielderror} alt="refresh-btn" /> Weak password
         </span>
       );
     } else if (length <= 15) {
       return (
-        <span style={{ background: "orange" }}>
-          <img src={shield} alt="refresh-btn" /> Strong Password
+        <span style={{ background: "#FF7014" }}>
+          <img src={shield} alt="refresh-btn" /> Safe password
         </span>
       );
     } else {
       return (
-        <span style={{ background: "#7aff3d" }}>
-          <img src={shield} alt="refresh-btn" /> Very Strong Password
+        <span style={{ background: "#00757e" }}>
+          <img src={shield} alt="refresh-btn" /> Strong Password
         </span>
       );
     }
@@ -77,64 +90,67 @@ class PasswordGenerator extends Component {
 
   render() {
     return (
-      <div className="wrapper">
-        <div
-          className="panel"
-          style={
-            this.state.length <= 5
-              ? { background: "red" }
-              : this.state.length <= 15
-                ? { background: "orange" }
-                : { background: "#7aff3d" }
-          }
-        >
-          <div className="password">
-            <div className="password-output">
-              <span>{this.state.password}</span>
-            </div>
-            <div className="btn-refresh" onClick={this.handleRefresh}>
-              <img src={refreshImg} alt="refresh-btn" />
-            </div>
-          </div>
-          <div className="security-check">
-            <p>{this.checkSafety()}</p>
-          </div>
-        </div>
-        <div className="control">
-          <button
-            className="btn btn-symbol"
+      <div className="bg-color" style={this.bgStyle()}>
+        <div className="wrapper" style={this.bgStyle()}>
+          <div
+            className="panel"
             style={
-              this.state.specialChar ? { border: "1px solid #2dbf90" } : {}
+              this.state.length <= 5
+                ? { background: "#E6323C" }
+                : this.state.length <= 15
+                  ? { background: "#FF7014" }
+                  : { background: "#00757e" }
             }
-            onClick={this.handleInputChange}
           >
-            Symbols
-          </button>
-          <CopyToClipboard
-            text={this.state.password}
-            onCopy={() => this.setState({ copied: true }, this.notify)}
-          >
-            <button className="btn btn-copy">Copy password</button>
-          </CopyToClipboard>
-          <div className="length">
-            Length: <span>{this.state.length}</span>
+            <div className="password">
+              <div className="password-output">
+                <span>{this.state.password}</span>
+              </div>
+              <div className="btn-refresh" onClick={this.handleRefresh}>
+                <img src={refreshImg} alt="refresh-btn" />
+              </div>
+            </div>
+            <div className="security-check">
+              <p>{this.checkSafety()}</p>
+            </div>
           </div>
-          <InputRange
-            maxValue={100}
-            minValue={1}
-            value={this.state.length}
-            onChange={length =>
-              this.setState({ length }, this.generatePassword)
-            }
-            onChangeComplete={() => console.log("Finished")}
-          />
-          <ToastContainer
-            position="top-center"
-            autoClose={1000}
-            hideProgressBar
-            closeOnClick
-            pauseOnVisibilityChange
-          />
+          <div className="control">
+            <button
+              className="btn btn-symbol"
+              style={
+                this.state.specialChar ? { border: "1.5px solid #00a5b1" } : {}
+              }
+              onClick={this.handleInputChange}
+            >
+              Symbols
+            </button>
+            <CopyToClipboard
+              text={this.state.password}
+              onCopy={() => this.setState({ copied: true }, this.notify)}
+            >
+              <button className="btn btn-copy">Copy password</button>
+            </CopyToClipboard>
+            <div className="length">
+              Length: <span>{this.state.length}</span>
+            </div>
+            <InputRange
+              maxValue={200}
+              minValue={1}
+              value={this.state.length}
+              onChange={length =>
+                this.setState({ length }, this.generatePassword)
+              }
+              onChangeComplete={() => console.log("Finished")}
+            />
+            <ToastContainer
+              position="top-center"
+              autoClose={1000}
+              hideProgressBar
+              closeOnClick
+              pauseOnVisibilityChange
+              pauseOnHover
+            />
+          </div>
         </div>
       </div>
     );

@@ -10,7 +10,7 @@
 }
 
 .input-range__slider {
-  background: #2dbf90;
+  background: #00a5b1;
   border: none;
 }
 
@@ -18,11 +18,11 @@
 }
 
 .input-range__track {
-  background: #ddd;
+  background: rgba(221, 221, 221, 0.5)
 }
 
 .input-range__track--active {
-  background: #ddd;
+  background: rgba(221, 221, 221, 0.7)
 }
 
 .input-range__label--value .input-range__label-container {

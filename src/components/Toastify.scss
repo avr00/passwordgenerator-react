@@ -1,0 +1,31 @@
+.Toastify__toast,
+.Toastify__toast--success {
+  background: #555555;
+}
+
+.Toastify__toast-container--top-center {
+  top: 1em;
+  left: 50%;
+  margin-left: -100px;
+}
+
+.Toastify__toast-container {
+  z-index: 9999;
+  position: fixed;
+  padding: 4px;
+  width: 200px;
+  box-sizing: border-box;
+  color: #fff;
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+
+  .Toastify__toast-container--top-center {
+    margin-left: -160px;
+  }
+
+  .Toastify__toast-container {
+    width: 320px;
+  }
+}
