@@ -92,6 +92,7 @@ class PasswordGenerator extends Component {
     return (
       <div className="bg-color" style={this.bgStyle()}>
         <div className="wrapper" style={this.bgStyle()}>
+        <p className="title">Password Generator</p>
           <div
             className="panel"
             style={
