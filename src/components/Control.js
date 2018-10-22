@@ -30,9 +30,11 @@ class Controls extends Component {
         >
           <button className="btn btn-copy">Copy password</button>
         </CopyToClipboard>
+
         <div className="length">
           Length: <span>{this.props.length}</span>
         </div>
+
         <InputRange
           maxValue={200}
           minValue={1}
@@ -40,6 +42,7 @@ class Controls extends Component {
           onChange={this.props.onChangeLength}
           // onChangeComplete={() => console.log("Finished")}
         />
+
         <ToastContainer
           position="top-center"
           autoClose={1000}
